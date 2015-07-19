@@ -35,7 +35,28 @@ exports.group = {
 
 		test.ok(7 == ret, "Substracts well");
 		test.done();
+	},
+
+	testadd_callback : function(test){
+
+		uzumaki.messageAsync('calculator.add', 10, 10, function(ret){
+
+			test.ok(ret == 20, 'Adds well in callback context');
+			test.done();
+
+		});
+	},
+
+	testsubstract_callback : function(test){
+
+		uzumaki.messageAsync('calculator.substract', 10, 6, function(ret){
+
+			test.ok(ret == 4, 'Substracts well in callback context');
+			test.done();
+
+		});
 	}
+
 
 };
 

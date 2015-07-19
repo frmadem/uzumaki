@@ -25,7 +25,17 @@
 		var args = Array.prototype.slice.call(arguments);
 
 		return uzumaki.registry().message(parts[0], parts[1], args.slice(1, args.length));	
+	};
 
+	uzumaki.messageAsync = function(call){
+
+		
+		var parts = call.split('.');
+		var args = Array.prototype.slice.call(arguments);
+
+		var callback = args.pop();
+
+		return uzumaki.registry().message(parts[0], parts[1], args.slice(1, args.length), callback);	
 	};
 
 }());
