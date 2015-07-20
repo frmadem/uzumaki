@@ -1,15 +1,17 @@
-var uzumaki;
+var Registry = require('./registry.js').registry();
 
-(function(){
 
-	"use strict";
+module.exports.spawn = function(actor, receive){
 
-	var Module = function(){};
+	Registry.register(actor, receive);
 
-	uzumaki = new Module();
+};
 
-	uzumaki.core = new Module();
+module.exports.send = function(){
 
-	exports.uzumaki = uzumaki;
-}());
+	var args = Array.prototype.slice.call(arguments);
+
+	Registry.deliverMessage.apply(Registry, args);
+
+};
 

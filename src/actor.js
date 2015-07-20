@@ -1,38 +1,5 @@
-function Message(name, args, callback){
-
-	this.name = name;
-	this.args = args;
-	this.callback = callback;
-
-}
-
-module.exports = Message;
-
-var Message = require('./message.js');
-
-function Mailbox(){
-
-	this.__stack = [];	
-
-}
-
-var p = Mailbox.prototype;
-
-p.newMessage = function(message){
-
-	this.__stack.push(message);
-
-};
-
-p.getMessage = function(){
-
-	return this.__stack.shift();
-
-};
-
-module.exports= Mailbox;
-
 var Mailbox = require('./mailbox.js');
+var Message = require('./message.js');
 
 function Actor(name, receive){
 
@@ -51,7 +18,9 @@ function Actor(name, receive){
 var p = Actor.prototype;
 
 //public
-p.send = function(message){
+p.send = function(message_name, args, callback){
+
+	var message = this.__createMessage(message_name, args, callback);
 
 	this.__mailbox.newMessage(message);
 
@@ -138,18 +107,18 @@ p.__initReceive = function(receive){
 
 };
 
+p.__createMessage = function(message_name, args, callback){
+
+	return new Message(
+
+		message_name,
+
+		args, 
+
+		callback
+
+	);
+
+};
+
 module.exports = Actor;
-
-var REGISTRY = false;
-
-function Registry(){
-
-	this.__localActors = {};
-
-}
-
-function registry(){
-
-}
-
-module.exports.registry = registry;

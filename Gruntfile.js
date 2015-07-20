@@ -8,15 +8,24 @@ module.exports = function(grunt) {
 		foo : {
 
 			src: [
-				'src/uzumaki.js', 
+
+				'src/message.js',
+
+				'src/mailbox.js',
+
+				'src/actor.js',
+
+				'src/registry.js'
+
+				//'src/uzumaki.js', 
 			
-				'src/core/component.js',
+				//'src/core/component.js',
 
-				'src/api.js',	
+				//'src/api.js',	
 		
-				'src/uzify.js',
+				//'src/uzify.js',
 
-				'src/register.js'
+				//'src/register.js'
 
 			],
 			dest : 'dist/<%= pkg.name %>.js'
