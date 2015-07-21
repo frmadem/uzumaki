@@ -11,9 +11,9 @@ You have to supply:
 
 ### Actor Model's assumptions
 
-- [x] Every actor is issolated from the outside world, the only way of communication with it is through messages sent to its Mailbox.
-- [x] Messages are always asynchronous, thus, you have to provide a callback 
-- [x] Every actor defines its own API, using a receive object
+- Every actor is issolated from the outside world, the only way of communication with it is through messages sent to its Mailbox.
+- Messages are always asynchronous, thus, you have to provide a callback 
+- Every actor defines its own API, using a receive object
 
 ```javascript
 
