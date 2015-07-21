@@ -77,7 +77,8 @@ p.deliverMessage = function(call, args, callback){
 
 	};
 
-function isAbbreviated(name) { return name.match(/\.(.+)/)}
-function isLocalActor(name) { return name.match(/^\w+$/) }
+// testers
+function isAbbreviated(name) { return name.match(/\.(.+)/); }
+function isLocalActor(name) { return name.match(/^\w+$/); }
 
 module.exports.registry = registry;
