@@ -13,6 +13,7 @@
     "grunt-contrib-qunit": "~0.5.2",
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "~0.6.1",
-    "nodeunit": "^0.9.1"
+    "nodeunit": "^0.9.1",
+    "webworker-threads": "^0.5.6"
   }
 }

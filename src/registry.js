@@ -1,4 +1,5 @@
 var Actor = require('./actor.js');
+var ActorInProcess = require('./actor_process.js');
 
 var REGISTRY = false;
 
@@ -13,6 +14,7 @@ function registry(){
 function Registry(){
 
 	this.__localActors = {};
+	this.__inProcessActors = {};
 
 }
 
@@ -21,17 +23,36 @@ var p = Registry.prototype;
 // register
 p.register = function(name, receive){
 
-	if(isLocalActor(name)){
+	if(isActorInProcess(name)){
+
+		this.__registerActorInProcess(name, receive);
+	}
+	else if(isLocalActor(name)){
 
 		this.__registerLocalActor(name, receive);
 
 	}
+
 
 };
 
 	p.__registerLocalActor = function(name, receive){
 	
 		this.__localActors[name] = new Actor(name, receive);
+
+	};
+
+	p.__registerActorInProcess = function(name, modulePath){
+
+		this.__inProcessActors[name] = new ActorInProcess(
+
+			name,
+			
+			modulePath
+
+		);
+
+		this.__inProcessActors[name].start();
 
 	};
 
@@ -79,6 +100,13 @@ p.deliverMessage = function(call, args, callback){
 
 // testers
 function isAbbreviated(name) { return name.match(/\.(.+)/); }
+
 function isLocalActor(name) { return name.match(/^\w+$/); }
+
+function isActorInProcess(name) { 
+
+	return name.match(/^p\#(.+)/); 
+
+}
 
 module.exports.registry = registry;

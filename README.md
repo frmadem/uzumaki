@@ -11,7 +11,8 @@ You have to supply:
 
 ### Actor Model's assumptions
 
-- Every actor is issolated from the outside world, the only way of communication with it is through messages sent to its Mailbox.
+- Every actor is issolated from the outside world
+- The only way of communication with it is through messages sent to its Mailbox.
 - Messages are always asynchronous, thus, you have to provide a callback 
 - Every actor defines its own API, using a receive object
 
@@ -29,7 +30,9 @@ uzumaki.spawn(
 
 		'-' : function(a,b) { return a - b },
 
-		'/' : function(a,b) { return a / b }
+		'/' : function(a,b) { return a / b },
+
+		'*' : function(a,b) { return a * b }
 
 	}
 );
@@ -40,9 +43,9 @@ uzumaki.send(
 
 	'calculator.+',  //message
 
-	[5, 5],
+	[5, 5], // args
 
-	function(result) {
+	function(result) {     // callback 
 
 		console.log(result)
 	}

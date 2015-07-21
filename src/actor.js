@@ -18,6 +18,11 @@ function Actor(name, receive){
 var p = Actor.prototype;
 
 //public
+
+p.start = function(){
+
+};
+
 p.send = function(message_name, args, callback){
 
 	var message = this.__createMessage(message_name, args, callback);

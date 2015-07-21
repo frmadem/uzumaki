@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
 				'src/actor.js',
 
+				'src/actor_process.js',
+
 				'src/registry.js'
 
 				//'src/uzumaki.js', 
@@ -42,7 +44,14 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            all: ['dist/<%= pkg.name %>.js']
+ 
+	        all: ['dist/<%= pkg.name %>.js'],
+
+		options: {
+
+			evil: true
+
+		}	
         },
         clean: {
             js: ['dist/*.js']
