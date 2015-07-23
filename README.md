@@ -87,5 +87,65 @@ uzumaki.send(
 
 ```
 
+#Simple Tutorial
+
+## Browser
+
+We want to create a piece of code that controls a resource, i.e. an area of the document where messages should be printed.
+
+We need access to it from several places of our application. 
+
+We use uzumaki to create an Actor!!!
+
+### The actor
+
+Let's create an actor, say... Logger
+
+```javascript
+
+	//we span a new actor
+	
+	uzumaki.spawn(
+
+		'Logger',
+
+		{
+
+			'log' : function(text){
+
+				var l = document.getElementById('logger');
+
+				var entry = document.createElement('p');
+
+				entry.innerText = text;
+
+				l.appendChild(entry);
+
+			}
+
+
+		}
+
+	);
+
+```
+
+### Consume of our actor
+
+Now, whenever we want to make an entry in our log, we just send a message to Logger
+
+```javascript
+
+	uzumaki.send('Logger.log', ['This is a message']);
+
+```
+
+
+
+
+
+
+
+
 
 
