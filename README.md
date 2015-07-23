@@ -1,4 +1,4 @@
-# uzumaki: Actor model for Javascript
+# uzumaki: Simple actor model for Javascript
 
 ### Documentation
 
@@ -30,7 +30,13 @@ uzumaki.spawn(
 
 		'-' : function(a,b) { return a - b },
 
-		'/' : function(a,b) { return a / b },
+		'/' : function(a,b) { 
+
+			if(b === 0) throw 'DIVISION_BY_ZERO';
+
+			return a / b 
+
+		},
 
 		'*' : function(a,b) { return a * b }
 
@@ -52,6 +58,32 @@ uzumaki.send(
 
 );
 
+
+// use of receiving object as a callback
+
+uzumaki.send(
+
+	'calculator./',
+
+	[10, 0],
+
+	{
+
+		'DIVISION_BY_ZERO' : function(){
+
+			console.log('Attempt of division by zero!!!');
+
+		},
+
+		'*' : function(ret){ //rest of the cases
+
+		}
+
+	}
+
+
+
+);
 
 ```
 

@@ -217,6 +217,46 @@ p.__createMessage = function(message_name, args, callback){
 
 module.exports = Actor;
 
+var _ = require('underscore-node');
+
+module.exports.createCallback = function(callback){
+
+	if(typeof(callback) === 'function'){
+		return callback;
+	}
+	else if(typeof(callback) == 'object'){
+
+		return __createCallback(callback);	
+
+	}
+};
+
+function __createCallback(receive_object){
+
+	var keys = Object.keys(receive_object);
+
+	return function(ret){
+
+		var r = test_literal(ret, receive_object, keys);
+
+		if(r){
+			r(ret);
+		}
+		else{
+			receive_object['*'](ret);
+		}	
+
+	};
+
+}
+
+	function test_literal(literal, object, keys){
+
+		var i = _.indexOf(keys, literal);
+
+		return (i != -1) ? keys(i) : false;
+	}
+
 //actor sitting in process
 var Actor = require('./actor.js');
 var Child = require('child_process');
@@ -316,6 +356,8 @@ p.deliverMessage = function(call, args, callback){
 
 	var message_name;
 	var actor = call;
+
+	callback = createCallback();
 
 	if(isAbbreviated(actor)){
 		

@@ -15,6 +15,8 @@ module.exports = function(grunt) {
 
 				'src/actor.js',
 
+				'src/callback.js',
+
 				'src/actor_process.js',
 
 				'src/registry.js'

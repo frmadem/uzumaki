@@ -69,8 +69,7 @@ p.__runMessage = function(message){
 
 	var code = this.__api[message.name];
 
-	code(message);
-
+	return code(message);
 };
 
 p.__initMailbox = function(){
@@ -96,7 +95,14 @@ p.__initReceive = function(receive){
 
 		this.__api[messageName] = function(message){
 
-			var ret = code.apply(this, message.args);
+			var ret;
+
+			try{
+				ret = code.apply(this, message.args);
+			}
+			catch(e){
+				ret = e;
+			}
 
 			if(message.callback){
 				message.callback(ret);

@@ -1,6 +1,8 @@
 var Actor = require('./actor.js');
 var ActorInProcess = require('./actor_process.js');
 
+var Callback = require('./callback.js');
+
 var REGISTRY = false;
 
 function registry(){
@@ -62,6 +64,8 @@ p.deliverMessage = function(call, args, callback){
 
 	var message_name;
 	var actor = call;
+
+	callback = Callback.createCallback(callback);
 
 	if(isAbbreviated(actor)){
 		

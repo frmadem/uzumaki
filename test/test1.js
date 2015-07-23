@@ -22,7 +22,7 @@ exports.group = {
 
 	testadd : function(test){
 
-		var ret = uzumaki.message('calculator.add', 5, 5);
+		var ret = uzumaki.send('calculator.add', 5, 5);
 
 		test.ok(10 == ret, "Adds well");
 		test.done();
