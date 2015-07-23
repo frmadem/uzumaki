@@ -140,7 +140,83 @@ Now, whenever we want to make an entry in our log, we just send a message to Log
 
 ```
 
+### Create a receive callback
 
+Let's imagine that we don't want to have more than 10 entries in our log. Thus, once we try to create a 11th, our actor refuses to update the screen. 
+
+```javascript
+
+	//we spawn the actor
+
+	var entries = 0;
+
+	uzumaki.spawn(
+
+		'Logger',
+
+		{
+
+			log : function(){
+
+				// no more than 10 entries any given time
+
+				if(entries + 1 > 10) 
+					throw 'ENTRIES_LIMIT_REACHED';
+
+				var l = document.getElementById('logger');
+
+				var entry = document.createElement('p');
+
+				entry.innerText = text;
+
+				l.appendChild(entry);
+
+				entries++;
+
+
+			}
+
+		}
+
+	)
+
+```
+
+### Control different callbacks from the actor
+
+So, now it's possible that something goes wrong with our message sent to Logger. 
+
+Instead of using a normal callback, we can use a receive object
+
+```javascript
+
+	uzumaki.send(
+
+		'Logger.log',
+
+		['This is a message'],
+
+		{
+
+			// control of limit reached
+
+			'ENTRIES_LIMIT_REACHED' : function(){
+
+
+			},
+
+			// rest of the cases
+
+			'*' : function(){
+
+			}
+
+		}
+
+
+	);
+
+```
 
 
 
