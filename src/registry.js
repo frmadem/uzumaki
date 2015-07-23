@@ -1,5 +1,4 @@
 var Actor = require('./actor.js');
-var ActorInProcess = require('./actor_process.js');
 
 var Callback = require('./callback.js');
 
@@ -25,11 +24,7 @@ var p = Registry.prototype;
 // register
 p.register = function(name, receive){
 
-	if(isActorInProcess(name)){
-
-		this.__registerActorInProcess(name, receive);
-	}
-	else if(isLocalActor(name)){
+	if(isLocalActor(name)){
 
 		this.__registerLocalActor(name, receive);
 
@@ -106,11 +101,5 @@ p.deliverMessage = function(call, args, callback){
 function isAbbreviated(name) { return name.match(/\.(.+)/); }
 
 function isLocalActor(name) { return name.match(/^\w+$/); }
-
-function isActorInProcess(name) { 
-
-	return name.match(/^p\#(.+)/); 
-
-}
 
 module.exports.registry = registry;

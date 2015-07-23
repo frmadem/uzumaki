@@ -158,8 +158,7 @@ p.__runMessage = function(message){
 
 	var code = this.__api[message.name];
 
-	code(message);
-
+	return code(message);
 };
 
 p.__initMailbox = function(){
@@ -185,7 +184,14 @@ p.__initReceive = function(receive){
 
 		this.__api[messageName] = function(message){
 
-			var ret = code.apply(this, message.args);
+			var ret;
+
+			try{
+				ret = code.apply(this, message.args);
+			}
+			catch(e){
+				ret = e;
+			}
 
 			if(message.callback){
 				message.callback(ret);
@@ -254,46 +260,12 @@ function __createCallback(receive_object){
 
 		var i = _.indexOf(keys, literal);
 
-		return (i != -1) ? keys(i) : false;
+		return (i != -1) ? object[keys[i]] : false;
 	}
 
-//actor sitting in process
 var Actor = require('./actor.js');
-var Child = require('child_process');
 
-function ActorInProcess(name, modulePath){
-
-	this.name = function(){
-		return name;
-	};
-
-	this.modulePath = modulePath;
-	
-}
-
-ActorInProcess.prototype = Object.create(Actor.prototype);
-
-ActorInProcess.prototype.constructor = ActorInProcess;
-
-var p = ActorInProcess.prototype;
-
-p.start = function(){
-
-	var child = Child.fork(
-
-		this.modulePath
-
-	);
-
-	this.ctl = child;
-
-};
-
-module.exports= ActorInProcess;
-
-
-var Actor = require('./actor.js');
-var ActorInProcess = require('./actor_process.js');
+var Callback = require('./callback.js');
 
 var REGISTRY = false;
 
@@ -317,11 +289,7 @@ var p = Registry.prototype;
 // register
 p.register = function(name, receive){
 
-	if(isActorInProcess(name)){
-
-		this.__registerActorInProcess(name, receive);
-	}
-	else if(isLocalActor(name)){
+	if(isLocalActor(name)){
 
 		this.__registerLocalActor(name, receive);
 
@@ -357,7 +325,7 @@ p.deliverMessage = function(call, args, callback){
 	var message_name;
 	var actor = call;
 
-	callback = createCallback();
+	callback = Callback.createCallback(callback);
 
 	if(isAbbreviated(actor)){
 		
@@ -399,10 +367,43 @@ function isAbbreviated(name) { return name.match(/\.(.+)/); }
 
 function isLocalActor(name) { return name.match(/^\w+$/); }
 
-function isActorInProcess(name) { 
-
-	return name.match(/^p\#(.+)/); 
-
-}
-
 module.exports.registry = registry;
+
+var Registry = require('./registry.js').registry();
+
+var F_IN_CHILD_PROCESS = false;
+
+module.exports.inChildProcess = function(set){
+
+	if(set === undefined){
+		return F_IN_CHILD_PROCESS;
+	}
+	else{
+
+		F_IN_CHILD_PROCESS = set;
+
+		if(F_IN_CHILD_PROCESS){
+
+			Registry = require('./registry_child_process.js').registry();		
+
+		}
+	}
+
+};
+
+module.exports.spawn = function(actor, receive){
+
+	Registry.register(actor, receive);
+
+};
+
+module.exports.send = function(){
+
+	var args = Array.prototype.slice.call(arguments);
+
+	Registry.deliverMessage.apply(Registry, args);
+
+};
+
+
+window.uzumaki = require('./uzumaki.js');

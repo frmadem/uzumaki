@@ -1,4 +1,4 @@
-# uzumaki: Simple actor model for Javascript
+# uzumaki: Actor model for Javascript
 
 ### Documentation
 
@@ -14,7 +14,7 @@ You have to supply:
 - Every actor is issolated from the outside world
 - The only way of communication with it is through messages sent to its Mailbox.
 - Messages are always asynchronous, thus, you have to provide a callback 
-- Every actor defines its own API, using a receive object
+- Every actor defines its own API, using a normal object
 
 ```javascript
 
