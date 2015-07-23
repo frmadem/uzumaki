@@ -130,7 +130,7 @@ Let's create an actor, say... Logger
 
 ```
 
-### Consume of our actor
+### Usage of our actor
 
 Now, whenever we want to make an entry in our log, we just send a message to Logger
 
