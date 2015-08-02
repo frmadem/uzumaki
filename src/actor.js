@@ -1,6 +1,8 @@
 var Mailbox = require('./mailbox.js');
 var Message = require('./message.js');
 
+var uzify = require('./api.js').uzify;
+
 function Actor(name, receive){
 
 	this.name = function(){
@@ -85,36 +87,7 @@ p.__initReceive = function(receive){
 		throw 'uzumaki.Actor.new: receive is not an object';
 	}
 
-	this.__api = {};
-
-	var messageNames = Object.keys(receive);
-
-	messageNames.forEach(function(messageName){
-
-		var code = receive[messageName];
-
-		this.__api[messageName] = function(message){
-
-			var ret;
-
-			try{
-				ret = code.apply(this, message.args);
-			}
-			catch(e){
-				ret = e;
-			}
-
-			if(message.callback){
-				message.callback(ret);
-			}
-			else{
-				return ret;
-			}
-
-		}.bind(this);
-		
-
-	}.bind(this));
+	this.__api = uzify(receive, this);
 
 };
 

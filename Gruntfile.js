@@ -11,6 +11,8 @@ module.exports = function(grunt) {
 	'src/callback.js',
 
 	'src/registry.js',
+	
+	'src/api.js',
 
 	'src/uzumaki.js'
      ]; 

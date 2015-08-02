@@ -1,41 +1,85 @@
-(function(){
+function uzify(api, actor){
 
-	uzumaki.register = function(name, object){
+	var api_z =  new ApiZ(actor);
 
-		if(typeof(object) !== 'object')
-			throw 'uzumaki.register: an object was expected';
+	transformObject(api, api_z);
 
-		var apiZ = object.__apiZ || [];
+	return api_z;
 
-		uzumaki.__uzify(name, object);
+}
 
-		apiZ.forEach(function(call){
 
-			var code = object[call];	
+function transformObject(api, api_z){
 
-			object.__uz().registerNewCall(call, code);	
+	Object.keys(api).forEach(function(messageName){
 
-		});
+		if(typeof(api[messageName]) !== 'function'){
 
-	};
+			api_z[messageName] = api[messageName];
 
-	uzumaki.message = function(call){
+			return;
+		}
 
-		var parts = call.split('.');
-		var args = Array.prototype.slice.call(arguments);
+		var code = api[messageName];
 
-		return uzumaki.registry().message(parts[0], parts[1], args.slice(1, args.length));	
-	};
+		api_z[messageName] = function(message){
 
-	uzumaki.messageAsync = function(call){
+			var ret;
+
+			try{
+				ret = code.apply(this, message.args);
+			}
+			catch(e){
+				ret = e;
+			}
+
+			if(message.callback){
+				message.callback(ret);
+			}	
+			else{
+				return ret;
+			}
+
+
+		}.bind(api_z);
+
+	}.bind(api_z));
+}
+
+
+/*API code*/
+
+function ApiZ(actor){
+
+	this.uz = new Uz(actor);
+
+}
+
+
+ApiZ.prototype = {
+
+
+};
+
+
+/*Uz object*/
+
+function Uz(actor){
+
+	this.__refActor = actor;
+
+}
+
+Uz.prototype = {
+
+	'return' : function(){
 
 		
-		var parts = call.split('.');
-		var args = Array.prototype.slice.call(arguments);
 
-		var callback = args.pop();
+	}
 
-		return uzumaki.registry().message(parts[0], parts[1], args.slice(1, args.length), callback);	
-	};
 
-}());
+};
+
+
+module.exports.uzify = uzify;
