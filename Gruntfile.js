@@ -14,6 +14,8 @@ module.exports = function(grunt) {
 	
 	'src/api.js',
 
+	'src/return.js',
+
 	'src/uzumaki.js'
      ]; 
 
