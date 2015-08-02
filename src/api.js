@@ -1,3 +1,5 @@
+var ParametricReturn = require('./return.js').ParametricReturn;
+
 function uzify(api, actor){
 
 	var api_z =  new ApiZ(actor);
@@ -72,10 +74,11 @@ function Uz(actor){
 
 Uz.prototype = {
 
-	'return' : function(){
+	'r' : function(){
 
-		
+		var args = Array.prototype.slice.call(arguments);
 
+		return new ParametricReturn(args.shift(), args);
 	}
 
 
