@@ -28,7 +28,7 @@ uzumaki.spawn('calculator', {
 	'/' : function(a, b){
 
 		if(b === 0){
-			throw 'DIVISION_BY_ZERO';
+			return this.uz.r('DIVISION_BY_ZERO');
 		}
 		else{
 			return a / b;
@@ -88,7 +88,7 @@ exports.group = {
 				test.done();
 			},
 
-			'*' : function(ret){
+			'*': function(ret){
 
 				test.ok(ret == expected, 'Division is right');
 				test.done();
